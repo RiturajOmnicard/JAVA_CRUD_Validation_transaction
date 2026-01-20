@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -17,22 +18,22 @@ public interface TransactionLogRepository extends JpaRepository<TransactionLog, 
 
     List<TransactionLog> findByUserIdAndTransactionTimeBetween(
             String userId,
-            Timestamp startTime,
-            Timestamp endTime
+            LocalDateTime startTime,
+            LocalDateTime endTime
     );
 
     long countByUserIdAndTransactionTimeBetween(
             String userId,
-            Timestamp startTime,
-            Timestamp endTime
+            LocalDateTime startTime,
+            LocalDateTime endTime
     );
 
     @Query("SELECT COALESCE(SUM(t.amount), 0) FROM TransactionLog t " +
             "WHERE t.userId = :userId AND t.transactionTime BETWEEN :startTime AND :endTime")
     BigDecimal sumAmountByUserIdAndTimeRange(
             @Param("userId") String userId,
-            @Param("startTime") Timestamp startTime,
-            @Param("endTime") Timestamp endTime
+            @Param("startTime") LocalDateTime startTime,
+            @Param("endTime") LocalDateTime endTime
     );
 
     // Get latest transaction of a user (cooling period rule)

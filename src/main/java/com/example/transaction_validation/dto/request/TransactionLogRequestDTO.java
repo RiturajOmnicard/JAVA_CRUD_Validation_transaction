@@ -6,6 +6,7 @@ public class TransactionLogRequestDTO {
 
     private String userId;
     private BigDecimal amount;
+    private String channel;
 
     public TransactionLogRequestDTO() {}
 
@@ -28,5 +29,13 @@ public class TransactionLogRequestDTO {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 }

@@ -2,9 +2,9 @@ package com.example.transaction_validation.entity;
 
 import com.example.transaction_validation.constants.RuleStatus;
 import com.example.transaction_validation.constants.RuleType;
+import com.example.transaction_validation.constants.Channel;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.nio.channels.Channel;
 
 @Entity
 @Table(name = "validation_rule")

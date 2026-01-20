@@ -13,6 +13,8 @@ public class TransactionLogResponseDTO {
     private TransactionStatus status;
     private String reasons;
     private LocalDateTime transactionTime;
+    private ErrorDTO error;
+
 
     public TransactionLogResponseDTO() {}
 
@@ -73,5 +75,13 @@ public class TransactionLogResponseDTO {
 
     public void setTransactionTime(LocalDateTime transactionTime) {
         this.transactionTime = transactionTime;
+    }
+
+    public ErrorDTO getError() {
+        return error;
+    }
+
+    public void setError(ErrorDTO error) {
+        this.error = error;
     }
 }
