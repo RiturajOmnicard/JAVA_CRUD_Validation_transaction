@@ -36,6 +36,5 @@ public interface TransactionLogRepository extends JpaRepository<TransactionLog, 
             @Param("endTime") LocalDateTime endTime
     );
 
-    // Get latest transaction of a user (cooling period rule)
     TransactionLog findTopByUserIdOrderByTransactionTimeDesc(String userId);
 }

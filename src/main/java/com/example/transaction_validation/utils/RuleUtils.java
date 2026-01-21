@@ -1,4 +1,4 @@
-package com.example.transaction_validation.validation;
+package com.example.transaction_validation.utils;
 
 import com.example.transaction_validation.constants.RuleType;
 import com.example.transaction_validation.entity.ValidationRule;

@@ -7,13 +7,13 @@ import com.example.transaction_validation.dto.request.TransactionLogRequestDTO;
 import com.example.transaction_validation.entity.ValidationRule;
 import com.example.transaction_validation.repository.TransactionLogRepository;
 import com.example.transaction_validation.repository.ValidationRuleRepository;
-import com.example.transaction_validation.validation.RuleUtils;
+import com.example.transaction_validation.utils.ChannelUtils;
+import com.example.transaction_validation.utils.RuleUtils;
 import com.example.transaction_validation.validation.RuleValidator;
 import com.example.transaction_validation.validation.ValidationResult;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,7 +32,7 @@ public class DailyTransactionAmountRule implements RuleValidator {
     @Override
     public ValidationResult validate(TransactionLogRequestDTO request) {
 
-        List<ValidationRule> rules = ruleRepository.findByStatusAndChannel(RuleStatus.ACTIVE, Channel.valueOf(request.getChannel()));
+        List<ValidationRule> rules = ruleRepository.findByStatusAndChannel(RuleStatus.ACTIVE, ChannelUtils.parseChannel(request.getChannel()));
 
         BigDecimal dailyLimit = RuleUtils.getRuleValue(rules, RuleType.DAILY_TXN_AMOUNT);
         if (dailyLimit == null) return ValidationResult.allowed();

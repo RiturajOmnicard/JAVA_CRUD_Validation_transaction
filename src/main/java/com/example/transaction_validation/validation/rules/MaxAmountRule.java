@@ -6,7 +6,8 @@ import com.example.transaction_validation.constants.RuleType;
 import com.example.transaction_validation.dto.request.TransactionLogRequestDTO;
 import com.example.transaction_validation.entity.ValidationRule;
 import com.example.transaction_validation.repository.ValidationRuleRepository;
-import com.example.transaction_validation.validation.RuleUtils;
+import com.example.transaction_validation.utils.ChannelUtils;
+import com.example.transaction_validation.utils.RuleUtils;
 import com.example.transaction_validation.validation.RuleValidator;
 import com.example.transaction_validation.validation.ValidationResult;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,7 @@ public class MaxAmountRule implements RuleValidator {
     @Override
     public ValidationResult validate(TransactionLogRequestDTO request) {
 
-        List<ValidationRule> rules = ruleRepository.findByStatusAndChannel(RuleStatus.ACTIVE, Channel.valueOf(request.getChannel()));
+        List<ValidationRule> rules = ruleRepository.findByStatusAndChannel(RuleStatus.ACTIVE, ChannelUtils.parseChannel(request.getChannel()));
 
         BigDecimal max = RuleUtils.getRuleValue(rules, RuleType.MAX_AMOUNT);
         if (max == null) return ValidationResult.allowed();

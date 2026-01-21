@@ -8,7 +8,8 @@ import com.example.transaction_validation.entity.TransactionLog;
 import com.example.transaction_validation.entity.ValidationRule;
 import com.example.transaction_validation.repository.TransactionLogRepository;
 import com.example.transaction_validation.repository.ValidationRuleRepository;
-import com.example.transaction_validation.validation.RuleUtils;
+import com.example.transaction_validation.utils.ChannelUtils;
+import com.example.transaction_validation.utils.RuleUtils;
 import com.example.transaction_validation.validation.RuleValidator;
 import com.example.transaction_validation.validation.ValidationResult;
 import org.springframework.stereotype.Component;
@@ -32,7 +33,7 @@ public class CoolingPeriodRule implements RuleValidator {
     @Override
     public ValidationResult validate(TransactionLogRequestDTO request) {
 
-        List<ValidationRule> rules = ruleRepository.findByStatusAndChannel(RuleStatus.ACTIVE, Channel.valueOf(request.getChannel()));
+        List<ValidationRule> rules = ruleRepository.findByStatusAndChannel(RuleStatus.ACTIVE, ChannelUtils.parseChannel(request.getChannel()));
 
         BigDecimal seconds = RuleUtils.getRuleValue(rules, RuleType.COOLING_PERIOD);
         if (seconds == null) return ValidationResult.allowed();
