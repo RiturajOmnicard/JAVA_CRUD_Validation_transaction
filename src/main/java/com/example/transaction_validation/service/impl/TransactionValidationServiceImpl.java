@@ -7,6 +7,7 @@ import com.example.transaction_validation.dto.response.TransactionLogResponseDTO
 import com.example.transaction_validation.entity.TransactionLog;
 import com.example.transaction_validation.repository.TransactionLogRepository;
 import com.example.transaction_validation.service.TransactionValidationService;
+import com.example.transaction_validation.service.UserService;
 import com.example.transaction_validation.validation.RuleValidator;
 import com.example.transaction_validation.validation.ValidationResult;
 import org.springframework.stereotype.Service;
@@ -20,17 +21,21 @@ public class TransactionValidationServiceImpl implements TransactionValidationSe
 
     private final TransactionLogRepository transactionLogRepository;
     private final List<RuleValidator> validators;
+    private final UserService userService;
 
     public TransactionValidationServiceImpl(TransactionLogRepository transactionLogRepository,
-                                            List<RuleValidator> validators) {
+                                            List<RuleValidator> validators,
+                                            UserService userService) {
         this.transactionLogRepository = transactionLogRepository;
         this.validators = validators;
+        this.userService = userService;
     }
 
     @Override
     public TransactionLogResponseDTO validateTransaction(TransactionLogRequestDTO request) {
 
-        // Run all validations (stop at first failure)
+        userService.getOrCreateUser(request.getUserId());
+
         ValidationResult finalResult = ValidationResult.allowed();
 
         for (RuleValidator validator : validators) {
@@ -56,7 +61,6 @@ public class TransactionValidationServiceImpl implements TransactionValidationSe
 
         transactionLogRepository.save(log);
 
-        // Create Response DTO
         TransactionLogResponseDTO response = new TransactionLogResponseDTO();
         response.setStatus(status);
 

@@ -1,6 +1,5 @@
 package com.example.transaction_validation.validation.rules;
 
-import com.example.transaction_validation.constants.Channel;
 import com.example.transaction_validation.constants.RuleStatus;
 import com.example.transaction_validation.constants.RuleType;
 import com.example.transaction_validation.dto.request.TransactionLogRequestDTO;
@@ -11,6 +10,7 @@ import com.example.transaction_validation.utils.ChannelUtils;
 import com.example.transaction_validation.utils.RuleUtils;
 import com.example.transaction_validation.validation.RuleValidator;
 import com.example.transaction_validation.validation.ValidationResult;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -22,6 +22,9 @@ public class HighVelocityRule implements RuleValidator {
 
     private final ValidationRuleRepository ruleRepository;
     private final TransactionLogRepository logRepository;
+
+    @Value("${highvelocity.window.minutes:1}")
+    private long windowMinutes;
 
     public HighVelocityRule(ValidationRuleRepository ruleRepository, TransactionLogRepository logRepository) {
         this.ruleRepository = ruleRepository;
@@ -36,9 +39,9 @@ public class HighVelocityRule implements RuleValidator {
         BigDecimal maxCount = RuleUtils.getRuleValue(rules, RuleType.HIGH_VELOCITY);
         if (maxCount == null) return ValidationResult.allowed();
 
-        // Example window: last 1 minute
+        //i used a 1 minute window, we can use env to configure it.
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime start = now.minusMinutes(1);
+        LocalDateTime start = now.minusMinutes(windowMinutes);
 
         long count = logRepository.countByUserIdAndTransactionTimeBetween(request.getUserId(), start, now);
 
