@@ -51,7 +51,6 @@ public class TransactionValidationServiceImpl implements TransactionValidationSe
                 ? TransactionStatus.ALLOWED
                 : TransactionStatus.BLOCKED;
 
-        // Save log to DB
         TransactionLog log = new TransactionLog();
         log.setUserId(request.getUserId());
         log.setAmount(request.getAmount());

@@ -20,8 +20,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId).orElseGet(() -> {
             User newUser = new User();
             newUser.setUserId(userId);
-            newUser.setStatus("ACTIVE");      // default status
-            newUser.setBlacklisted(false);    // default blacklist
+            newUser.setStatus("ACTIVE");
+            newUser.setBlacklisted(false);
             return userRepository.save(newUser);
         });
     }
