@@ -25,6 +25,8 @@ public class TransactionController {
     public ResponseEntity<TransactionLogResponseDTO> validateTransaction(
             @Valid @RequestBody TransactionLogRequestDTO request
     ) {
+
+
         TransactionLogResponseDTO response = transactionValidationService.validateTransaction(request);
         return ResponseEntity.ok(response);
     }
